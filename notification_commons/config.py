@@ -1,0 +1,38 @@
+import os
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+DEBUG = False
+
+# NOTIFICATIONS
+NOTIFICATION_TOPIC = 'notifications'
+NOTIFICATION_KEY = 'key'
+
+# SMS Notification Topic
+SMS_NOTIFICATION_TOPIC = 'priority_sms'
+SMS_NOTIFICATION_KEY = 'sms'
+
+# PUSH Notification
+PUSH_NOTIFICATION_TOPIC = 'priority_push'
+PUSH_NOTIFICATION_KEY = 'push'
+
+# PUSH POLLING
+PUSH_TIMEOUT_MS = 500
+
+# SMS POLLING
+SMS_TIMEOUT_MS = 1000
+
+# KAFKA CONSUMER SETTINGS
+KAFKA_BOOTSTRAP_SERVER = ['localhost:9091']
+AUTO_OFFSET_RESET = 'earliest'
+ENABLE_AUTO_COMMIT = True
+GROUP_ID = None
+
+# REDIS
+REDIS_HOST = 'redis'
+REDIS_PORT = 6379
+DB = 0
+DECODE_RESPONSES = True
+
+# RETELIMIT
+MAX_REQUESTS = 10
+TIME_DELTA = 30

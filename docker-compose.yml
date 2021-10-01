@@ -1,0 +1,46 @@
+version: '3.9'
+services:
+    redis:
+        image: redis:alpine
+        restart: always
+        expose:
+            - '6379'
+        ports:
+            - '6379:6379'
+        networks:
+            - proxynet
+
+    zookeeper:
+        image: wurstmeister/zookeeper:3.4.6
+        ports:
+            - "2181:2181"
+    kafka:
+        image: confluentinc/cp-kafka:5.3.0
+        hostname: kafka1
+        ports:
+            - "9091:9091"
+        expose:
+            - "9091"
+        environment:
+            KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka1:9091,OUTSIDE://localhost:9092
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+            KAFKA_LISTENERS: INSIDE://0.0.0.0:9091,OUTSIDE://0.0.0.0:9092
+            KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+
+    notification_service:
+        build: .
+        ports:
+            - "5000:5000"
+        volumes:
+            - .:/code
+        depends_on:
+            - redis
+            - kafka
+        networks:
+            - proxynet
+networks:
+    proxynet:
+        name: custom_network
